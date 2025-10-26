@@ -12,6 +12,7 @@
     "expo": "~54.0.20",
     "expo-status-bar": "~3.0.8",
     "react": "19.1.0",
+    "react-devtools": "^7.0.1",
     "react-native": "0.81.5"
   },
   "private": true
