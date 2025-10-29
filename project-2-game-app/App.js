@@ -1,4 +1,11 @@
-import { StyleSheet, ImageBackground, StatusBar } from "react-native";
+import {
+  StyleSheet,
+  ImageBackground,
+  StatusBar,
+  FlatList,
+  View,
+  Text,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import StartGameScreen from "./screens/StartGameScreen";
@@ -10,12 +17,19 @@ import GameOverScreen from "./screens/GameOverScreen";
 export default function App() {
   const [pickedNumber, setPickedNumber] = useState(null);
   const [isGameOver, setIsGameOver] = useState(false);
+  const [gameRounds, setGameRounds] = useState(0);
 
   const onPickNumber = (number) => {
     setPickedNumber(number);
   };
-  const onGameOver = () => {
+  const onGameOver = (noOfRounds) => {
     setIsGameOver(true);
+    setGameRounds(noOfRounds);
+  };
+  const restartgameHandler = () => {
+    setPickedNumber(null);
+    setIsGameOver(false);
+    setGameRounds(0);
   };
 
   let screen = pickedNumber ? (
@@ -25,11 +39,19 @@ export default function App() {
   );
 
   if (isGameOver) {
-    screen = <GameOverScreen />;
+    screen = (
+      <GameOverScreen
+        roundNumber={gameRounds}
+        guessedNumber={pickedNumber}
+        onGameRestart={restartgameHandler}
+      />
+    );
   }
+
   return (
     <>
       <StatusBar style="light" />
+
       <LinearGradient
         style={styles.rootscreen}
         colors={["#3d001fff", "#ad8606ff"]}

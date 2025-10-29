@@ -1,9 +1,10 @@
-import { Text, View, StyleSheet, Alert } from "react-native";
+import { Text, View, StyleSheet, Alert, FlatList } from "react-native";
 import Colors from "../constants/Colors";
 import NumberContainer from "../components/game/NumberContainer";
 import { useEffect, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import PrimaryButton from "../components/PrimaryButton";
+import GuessLogItem from "../components/game/GuessLogItem";
 
 const randomNumberGenerator = (max, min, exclude) => {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -20,6 +21,7 @@ let maxBoundary = 100;
 const GameScreen = ({ pickedNumber, onGameOver }) => {
   const initialGuess = randomNumberGenerator(1, 100, pickedNumber);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
+  const [guessRounds, setGuessRounds] = useState([initialGuess]);
 
   const nextGuessHandler = (direction) => {
     if (
@@ -43,13 +45,17 @@ const GameScreen = ({ pickedNumber, onGameOver }) => {
       currentGuess
     );
     setCurrentGuess(newRndNumber);
+    setGuessRounds((prevGuessRounds) => [newRndNumber, ...prevGuessRounds]);
   };
 
   useEffect(() => {
     if (currentGuess === pickedNumber) {
-      onGameOver();
+      minBoundary = 1;
+      maxBoundary = 100;
+      onGameOver(guessRounds.length);
     }
   }, [currentGuess, pickedNumber, onGameOver]);
+
   return (
     <View style={styles.screen}>
       <Text style={styles.title}>Game Screen</Text>
@@ -69,6 +75,19 @@ const GameScreen = ({ pickedNumber, onGameOver }) => {
           </View>
         </View>
       </View>
+      <View style={styles.listContainer}>
+        <FlatList
+          data={guessRounds}
+          renderItem={(itemDat) => (
+            <GuessLogItem
+              roundNumber={itemDat.index + 1}
+              guess={itemDat.item}
+            />
+          )}
+          keyExtractor={(item) => item}
+          alwaysBounceVertical={false}
+        />
+      </View>
     </View>
   );
 };
@@ -79,6 +98,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: 24,
+    alignItems: "center",
   },
   title: {
     fontSize: 24,
@@ -114,5 +134,9 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
+  },
+  listContainer: {
+    flex: 1,
+    padding: 16,
   },
 });
