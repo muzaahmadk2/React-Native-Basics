@@ -5,12 +5,15 @@ import {
   Pressable,
   Alert,
   Text,
+  Dimensions,
+  useWindowDimensions,
 } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
-import { useState } from "react";
+import { use, useState } from "react";
 import Colors from "../constants/Colors";
 
 const StartGameScreen = ({ onPickNumber }) => {
+  const { width, height } = useWindowDimensions(); // to handle orientation changes
   const [enteredNumber, setEnteredNumber] = useState("");
 
   const numberInputHandler = (inputText) => {
@@ -36,8 +39,10 @@ const StartGameScreen = ({ onPickNumber }) => {
     }
     onPickNumber(chosenNumber);
   };
+
+  const marginTop = height < 400 ? 30 : 100;
   return (
-    <View style={styles.rootContainer}>
+    <View style={[styles.rootContainer, { marginTop: marginTop }]}>
       <Text style={styles.title}>Guess My Number</Text>
       <View style={styles.inputContainer}>
         <TextInput
@@ -66,14 +71,16 @@ const StartGameScreen = ({ onPickNumber }) => {
 
 export default StartGameScreen;
 
+const deviceWidth = Dimensions.get("window").width;
+
 const styles = StyleSheet.create({
   rootContainer: {
-    marginTop: 100,
+    // marginTop: 100,
     flex: 1,
     alignItems: "center",
   },
   title: {
-    fontSize: 24,
+    fontSize: deviceWidth < 380 ? 22 : 36,
     fontWeight: "bold",
     color: "white",
     borderWidth: 2,

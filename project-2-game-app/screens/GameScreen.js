@@ -1,4 +1,11 @@
-import { Text, View, StyleSheet, Alert, FlatList } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Alert,
+  FlatList,
+  Dimensions,
+} from "react-native";
 import Colors from "../constants/Colors";
 import NumberContainer from "../components/game/NumberContainer";
 import { useEffect, useState } from "react";
@@ -93,6 +100,7 @@ const GameScreen = ({ pickedNumber, onGameOver }) => {
 };
 
 export default GameScreen;
+const deviceWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
   screen: {
@@ -101,13 +109,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontSize: 24,
+    fontSize: deviceWidth < 380 ? 22 : 36,
     fontWeight: "bold",
     color: "white",
     borderWidth: 2,
     borderColor: "white",
     padding: 12,
     textAlign: "center",
+    maxWidth: "80%",
   },
   textinput: {
     fontSize: 24,
@@ -118,7 +127,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 32,
+    marginTop: deviceWidth < 380 ? 16 : 32,
     padding: 16,
     borderRadius: 8,
     backgroundColor: Colors.primary500,
