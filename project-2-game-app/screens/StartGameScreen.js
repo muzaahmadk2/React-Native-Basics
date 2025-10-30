@@ -9,6 +9,7 @@ import {
   useWindowDimensions,
   ScrollView,
   KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
 import { use, useState } from "react";
@@ -92,7 +93,8 @@ const styles = StyleSheet.create({
     fontSize: deviceWidth < 380 ? 22 : 36,
     fontWeight: "bold",
     color: "white",
-    borderWidth: 2,
+    // borderWidth: Platform.OS === 'android' ? 2 : 0,
+    borderWidth: Platform.select({ android: 2, ios: 0 }), // alternative way
     borderColor: "white",
     padding: 12,
     textAlign: "center",
