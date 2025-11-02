@@ -3,11 +3,54 @@ import { StyleSheet, Text, View, Button } from "react-native";
 import CategoryScreen from "./screen/CategoryScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import Ionicons from "@expo/vector-icons/Ionicons";
+
 import MealsOverviewScreen from "./screen/MealsOverviewScreen";
 import MealDetailsScreen from "./screen/MealDetailsScreen";
+import FavouriteScreen from "./screen/FavouriteScreen";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
+  const Drawer = createDrawerNavigator();
+
+  const renderDrawerNavigator = () => {
+    return (
+      <Drawer.Navigator
+        screenOptions={{
+          headerStyle: { backgroundColor: "#512600ff" },
+          headerTintColor: "white",
+          sceneStyle: { backgroundColor: "#6f3400ff" },
+          drawerContentStyle: { backgroundColor: "#351401" },
+          drawerInactiveTintColor: "white",
+          drawerActiveTintColor: "#351401",
+          drawerActiveBackgroundColor: "#c88862ff",
+          drawerItemStyle: { borderRadius: 8 },
+        }}
+      >
+        <Drawer.Screen
+          name="MealsCategories"
+          component={CategoryScreen}
+          options={{
+            title: "All Categories",
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name="list" color={color} size={size} />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="FavouriteScreen"
+          component={FavouriteScreen}
+          options={{
+            title: "Favourites",
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name="star" color={color} size={size} />
+            ),
+          }}
+        />
+      </Drawer.Navigator>
+    );
+  };
   return (
     <>
       <StatusBar style="light" />
@@ -20,10 +63,10 @@ export default function App() {
           }}
         >
           <Stack.Screen
-            name="MeanlsCategories"
-            component={CategoryScreen}
+            name="drawer"
+            component={renderDrawerNavigator}
             options={{
-              title: "All Categories",
+              headerShown: false,
             }}
           />
           <Stack.Screen
