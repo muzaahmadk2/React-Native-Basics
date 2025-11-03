@@ -9,6 +9,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import MealsOverviewScreen from "./screen/MealsOverviewScreen";
 import MealDetailsScreen from "./screen/MealDetailsScreen";
 import FavouriteScreen from "./screen/FavouriteScreen";
+import FavouritesContextProvider from "./store/context/favourites-context";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -54,32 +55,34 @@ export default function App() {
   return (
     <>
       <StatusBar style="light" />
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: { backgroundColor: "#512600ff" },
-            headerTintColor: "white",
-            contentStyle: { backgroundColor: "#6f3400ff" },
-          }}
-        >
-          <Stack.Screen
-            name="drawer"
-            component={renderDrawerNavigator}
-            options={{
-              headerShown: false,
+      <FavouritesContextProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: { backgroundColor: "#512600ff" },
+              headerTintColor: "white",
+              contentStyle: { backgroundColor: "#6f3400ff" },
             }}
-          />
-          <Stack.Screen
-            name="MealsOverview"
-            component={MealsOverviewScreen}
-            // options={({ route, navigation }) => {
-            //   const catId = route.params.catId;
-            //   return { title: catId };
-            // }}
-          />
-          <Stack.Screen name="MealDetails" component={MealDetailsScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+          >
+            <Stack.Screen
+              name="drawer"
+              component={renderDrawerNavigator}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="MealsOverview"
+              component={MealsOverviewScreen}
+              // options={({ route, navigation }) => {
+              //   const catId = route.params.catId;
+              //   return { title: catId };
+              // }}
+            />
+            <Stack.Screen name="MealDetails" component={MealDetailsScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </FavouritesContextProvider>
     </>
   );
 }
